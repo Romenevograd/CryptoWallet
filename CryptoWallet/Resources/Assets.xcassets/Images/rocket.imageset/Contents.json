@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "free-icon-font-rocket-lunch-6955628 1.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "gpu-optimized-best"
+  }
+}
