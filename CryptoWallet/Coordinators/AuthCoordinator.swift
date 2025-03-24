@@ -26,6 +26,7 @@ final class AuthCoordinator: ICoordinator {
     }
 
     func showMainFlow() {
+        dependencies.storages.appDefaults.set(value: true, for: .loggedIn)
         delegate?.didFinishAuth()
     }
 }

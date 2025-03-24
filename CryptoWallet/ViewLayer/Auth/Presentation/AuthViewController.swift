@@ -124,6 +124,7 @@ final class AuthViewController: UIViewController, IAuthViewOutput {
         loginButton.setTitle("Auth.Button.Login".localized, for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         loginButton.backgroundColor = loginButton.isEnabled ? .Background.buttonPrimary : .Background.buttonPrimary.withAlphaComponent(0.5)
+        loginButton.addTarget(self, action: #selector(logginButtonTapped), for: .touchUpInside)
         loginButton.layer.cornerRadius = 28
         stackView.addArrangedSubview(loginButton)
         loginButton.snp.makeConstraints { make in
@@ -170,5 +171,10 @@ final class AuthViewController: UIViewController, IAuthViewOutput {
     @objc
     private func tapAction() {
         view.endEditing(true)
+    }
+    
+    @objc
+    private func logginButtonTapped() {
+        presenter?.logIn()
     }
 }

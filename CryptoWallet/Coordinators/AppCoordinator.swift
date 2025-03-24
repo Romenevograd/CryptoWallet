@@ -5,6 +5,9 @@ final class AppCoordinator: ICoordinator {
 
     private let window: UIWindow
     private let dependencies: IDependencies
+    
+    private var authCoordinator: AuthCoordinator?
+    private var mainCoordinator: MainCoordinator?
 
     init(
         window: UIWindow,
@@ -30,21 +33,21 @@ final class AppCoordinator: ICoordinator {
     }
 
     private func showAuthFlow() {
-        let authCoordinator = AuthCoordinator(
+        authCoordinator = AuthCoordinator(
             navigationController: navigationController,
             dependencies: dependencies,
             delegate: self
         )
-        authCoordinator.start()
+        authCoordinator?.start()
     }
 
     private func showMainFlow() {
-        let mainCoordinator = MainCoordinator(
+        mainCoordinator = MainCoordinator(
             navigationController: navigationController,
             dependencies: dependencies,
             delegate: self
         )
-        mainCoordinator.start()
+        mainCoordinator?.start()
     }
 }
 

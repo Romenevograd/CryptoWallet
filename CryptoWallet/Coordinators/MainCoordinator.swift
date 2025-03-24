@@ -22,8 +22,8 @@ final class MainCoordinator: ICoordinator {
     }
 
     func start() {
-        let homeVC = UIViewController()
-        navigationController.setViewControllers([homeVC], animated: false)
+        let mainVC = MainViewController()
+        navigationController.setViewControllers([mainVC], animated: false)
     }
 
     func showCoinsList() {
