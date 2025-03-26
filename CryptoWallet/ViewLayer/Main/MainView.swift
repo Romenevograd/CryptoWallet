@@ -4,7 +4,18 @@ import UIKit
 class MainView: UIView {
     
     private let tableView = UITableView()
-    private let items = ["btc", "eth", "tron", "luna", "cell", "dogecoin", "tether", "stellar", "cardano", "xrp"]
+    private let items = [
+        ("Bitcoin", "BTC"),
+        ("Ethereum", "ETH"),
+        ("Tron", "TRX"),
+        ("Terra", "LUNA"),
+        ("Cellframe", "CELL"),
+        ("Dogecoin", "DOGE"),
+        ("Tether", "USDT"),
+        ("Stellar", "XLM"),
+        ("Cardano", "ADA"),
+        ("Ripple", "XRP")
+    ]
     
     init() {
         super.init(frame: .zero)
@@ -27,8 +38,11 @@ class MainView: UIView {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .Background.pink
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
+        tableView.separatorStyle = .none
+        tableView.rowHeight = 72
         tableView.reloadData()
+        tableView.clipsToBounds = true
     }
 }
 
@@ -39,11 +53,16 @@ extension MainView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = items[indexPath.row]
-        cell.textLabel?.textColor = .black
-        cell.backgroundColor = .clear
-        return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseIdentifier, for: indexPath) as? CustomTableViewCell else {
+            return UITableViewCell()
+        }
+            let item = items[indexPath.row]
+                    cell.configure(
+                        with: item.0, //Вопрос!!!
+                        subtitle: item.1,
+                        iconName: item.1.lowercased()
+                    )
+                    return cell
     }
 }
 
