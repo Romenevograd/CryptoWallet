@@ -3,6 +3,7 @@ import UIKit
 
 class MainView: UIView {
     
+    private let headerView = HeaderView()
     private let tableView = UITableView()
     private let items = [
         ("Bitcoin", "BTC"),
@@ -27,13 +28,23 @@ class MainView: UIView {
     }
     
     private func setupUI() {
+        setupHeaderView()
         setupTableView()
+    }
+    
+    private func setupHeaderView() {
+        addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.height.equalToSuperview().dividedBy(3)
+        }
     }
     
     private func setupTableView() {
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(headerView.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
         tableView.dataSource = self
         tableView.delegate = self
