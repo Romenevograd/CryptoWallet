@@ -14,9 +14,9 @@ class HeaderView: UIView {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = UIColor.gray.withAlphaComponent(0.8)
-        label.text = "subtitle"
+        label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .white
+        label.text = "Affiliate program"
         return label
     }()
     
@@ -36,13 +36,6 @@ class HeaderView: UIView {
         return button
     }()
     
-    private let textStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 4
-        stack.alignment = .leading
-        return stack
-    }()
     
     // MARK: - Lifecycle
     init() {
@@ -58,23 +51,29 @@ class HeaderView: UIView {
     // MARK: - Setup
     private func setupUI() {
         backgroundColor = .Background.pink
+        layer.maskedCorners = []
         
-        addSubview(textStackView)
+        addSubview(titleLabel)
+        addSubview(subtitleLabel)
         addSubview(moreButtonContainer)
         moreButtonContainer.addSubview(moreButton)
-        
-        textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(subtitleLabel)
+
         
         moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
-        textStackView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.bottom.equalToSuperview().inset(16)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(50)
+            make.leading.equalToSuperview().inset(20)
             make.trailing.lessThanOrEqualTo(moreButton.snp.leading).offset(-16)
+        }
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(60)
+            make.leading.equalTo(titleLabel)
+            make.trailing.equalTo(titleLabel)
+            make.bottom.lessThanOrEqualToSuperview().inset(16)
         }
         
         moreButtonContainer.snp.makeConstraints { make in

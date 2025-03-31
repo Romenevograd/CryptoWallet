@@ -28,6 +28,8 @@ class MainView: UIView {
     }
     
     private func setupUI() {
+        backgroundColor = .Background.pink
+        
         setupHeaderView()
         setupTableView()
     }
@@ -42,18 +44,23 @@ class MainView: UIView {
     
     private func setupTableView() {
         addSubview(tableView)
+        
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom)
-            make.left.right.bottom.equalToSuperview()
+            make.top.equalTo(headerView.snp.bottom).offset(-20)
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+            
         }
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .Background.pink
+        tableView.backgroundColor = .clear
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.rowHeight = 72
         tableView.reloadData()
         tableView.clipsToBounds = true
+        tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        tableView.layer.cornerRadius = 16
     }
 }
 
@@ -73,6 +80,14 @@ extension MainView: UITableViewDataSource {
                         subtitle: item.1,
                         iconName: item.1.lowercased()
                     )
+        
+        if indexPath.row == 0 {
+            cell.containerView.layer.cornerRadius = 12
+            cell.containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            cell.containerView.layer.masksToBounds = true
+        } else {
+            cell.containerView.layer.cornerRadius = 0
+        }
                     return cell
     }
 }

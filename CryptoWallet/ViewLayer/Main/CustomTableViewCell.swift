@@ -5,7 +5,7 @@ class CustomTableViewCell: UITableViewCell {
     static let reuseIdentifier = "CustomTableViewCell"
     
     ///MARK: - UI Elements
-    private let containerView: UIView = {
+        let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .Background.grey1
         view.layer.cornerRadius = 12
@@ -46,7 +46,7 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .Background.grey1
+        backgroundColor = .clear
         
         contentView.addSubview(containerView)
         containerView.addSubview(iconImageView)
@@ -57,8 +57,8 @@ class CustomTableViewCell: UITableViewCell {
     
     private func setupConstrains() {
         containerView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(4)
-            make.left.right.equalToSuperview().inset(6)
+            make.top.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
         }
         
         iconImageView.snp.makeConstraints() { make in
