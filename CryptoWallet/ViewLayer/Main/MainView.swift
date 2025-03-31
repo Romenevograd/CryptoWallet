@@ -60,7 +60,7 @@ class MainView: UIView {
         tableView.reloadData()
         tableView.clipsToBounds = true
         tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        tableView.layer.cornerRadius = 16
+        tableView.layer.cornerRadius = 24
     }
 }
 
