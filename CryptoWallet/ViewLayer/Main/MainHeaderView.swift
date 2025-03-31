@@ -40,6 +40,11 @@ class HeaderView: UIView {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "server")
+        imageView.layer.shadowColor = UIColor.black.cgColor
+        imageView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        imageView.layer.shadowRadius = 16
+        imageView.layer.shadowOpacity = 0.4
+        imageView.layer.masksToBounds = false
         return imageView
     }()
     
@@ -49,8 +54,8 @@ class HeaderView: UIView {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
-        button.layer.cornerRadius = 22
-        button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 10, bottom: 12, right: 10)
+        button.layer.cornerRadius = 20
+        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         return button
     }()
     
@@ -120,6 +125,7 @@ class HeaderView: UIView {
             make.width.equalTo(130)
         }
     }
+
     
     // MARK: - Actions
         @objc private func moreButtonTapped() {
@@ -132,7 +138,6 @@ class HeaderView: UIView {
                     self.moreButtonContainer.alpha = 1.0
                 }
                 print("More button tapped")
-                // Действие при нажатии
             })
         }
         
@@ -144,7 +149,7 @@ class HeaderView: UIView {
             self.learnMoreButton.transform = .identity
         }
         })
-        print("Learn more tap")
+        print("Learn more tapped")
     }
         // MARK: - Configuration
         func configure(title: String, subtitle: String) {
