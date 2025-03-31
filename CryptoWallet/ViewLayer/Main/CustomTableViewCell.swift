@@ -8,7 +8,7 @@ class CustomTableViewCell: UITableViewCell {
         let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .Background.grey1
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = 24
         view.layer.masksToBounds = true
         return view
     }()

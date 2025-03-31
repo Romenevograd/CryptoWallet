@@ -82,7 +82,7 @@ extension MainView: UITableViewDataSource {
                     )
         
         if indexPath.row == 0 {
-            cell.containerView.layer.cornerRadius = 12
+            cell.containerView.layer.cornerRadius = 24
             cell.containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             cell.containerView.layer.masksToBounds = true
         } else {
