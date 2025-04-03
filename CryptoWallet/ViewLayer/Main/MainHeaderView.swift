@@ -59,6 +59,13 @@ class HeaderView: UIView {
         return button
     }()
     
+    private lazy var popupMenu: PopupMenuView = {
+        let menu = PopupMenuView()
+        menu.delegate = self
+        menu.isHidden = true
+        menu.alpha = 0
+        return menu
+    }()
     
     // MARK: - Lifecycle
     init() {
@@ -77,22 +84,30 @@ class HeaderView: UIView {
         layer.maskedCorners = []
         
         addSubview(serverImageView)
+        addSubview(popupMenu)
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(moreButtonContainer)
         addSubview(learnMoreButton)
         moreButtonContainer.addSubview(moreButton)
-
+        
         
         moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
         learnMoreButton.addTarget(self, action: #selector(learnMoreButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
+        popupMenu.snp.makeConstraints { make in
+            make.top.equalTo(moreButtonContainer.snp.bottom).offset(8)
+            make.trailing.equalTo(moreButtonContainer).offset(-10)
+            make.width.equalTo(150)
+            make.height.equalTo(90)
+        }
+        
         serverImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(40)
             make.bottom.equalToSuperview().offset(60)
-
+            
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -125,35 +140,68 @@ class HeaderView: UIView {
             make.width.equalTo(130)
         }
     }
-
+    
     
     // MARK: - Actions
-        @objc private func moreButtonTapped() {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.moreButtonContainer.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-                self.moreButtonContainer.alpha = 0.8
-            }, completion: { _ in
-                UIView.animate(withDuration: 0.2) {
-                    self.moreButtonContainer.transform = .identity
-                    self.moreButtonContainer.alpha = 1.0
-                }
-                print("More button tapped")
-            })
+    @objc private func moreButtonTapped() {
+        UIView.animate(withDuration: 0.2) {
+            self.moreButtonContainer.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            
+            if self.popupMenu.isHidden {
+                self.popupMenu.isHidden = false
+                self.popupMenu.alpha = 1
+            } else {
+                self.popupMenu.alpha = 0
+            }
+        } completion: { _ in
+            self.moreButtonContainer.transform = .identity
+            if self.popupMenu.alpha == 0 {
+                self.popupMenu.isHidden = true
+            }
         }
-        
+    }
+    
     @objc private func learnMoreButtonTapped() {
         UIView.animate(withDuration: 0.2, animations: {
             self.learnMoreButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         }, completion: { _ in
-        UIView.animate(withDuration: 0.2) {
-            self.learnMoreButton.transform = .identity
-        }
+            UIView.animate(withDuration: 0.2) {
+                self.learnMoreButton.transform = .identity
+            }
         })
         print("Learn more tapped")
     }
-        // MARK: - Configuration
-        func configure(title: String, subtitle: String) {
-            titleLabel.text = title
-            subtitleLabel.text = subtitle
+    // MARK: - Configuration
+    func configure(title: String, subtitle: String) {
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        if !popupMenu.isHidden && view != moreButton {
+            hidePopup()
+        }
+        return view
+    }
+}
+
+extension HeaderView: PopupMenuDelegate {
+    func didSelectFirstAction() {
+        print("Settings tapped")
+        hidePopup()
+    }
+    
+    func didSelectSecondAction() {
+        print("Logout tapped")
+        hidePopup()
+    }
+    
+    private func hidePopup() {
+        UIView.animate(withDuration: 0.2) {
+            self.popupMenu.alpha = 0
+        } completion: { _ in
+            self.popupMenu.isHidden = true
         }
     }
+}
