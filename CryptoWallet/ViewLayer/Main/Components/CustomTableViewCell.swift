@@ -7,8 +7,7 @@ class CustomTableViewCell: UITableViewCell {
     ///MARK: - UI Elements
         let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .Background.grey1
-        view.layer.cornerRadius = 24
+        view.backgroundColor = .backgroundMain
         view.layer.masksToBounds = true
         return view
     }()
@@ -22,21 +21,21 @@ class CustomTableViewCell: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .black
+        label.textColor = .textPrimary
         return label
     }()
     
     let subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 14, weight: .bold)
-        label.textColor = .systemGray
+        label.textColor = .textPrimary
         return label
     }()
     
     ///MARK: - LifeCycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .none //убирает выделение ячейки
+        selectionStyle = .none
         setupUI()
         setupConstrains()
     }
@@ -46,7 +45,7 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .clear
+        backgroundColor = .green
         
         contentView.addSubview(containerView)
         containerView.addSubview(iconImageView)
@@ -90,3 +89,4 @@ class CustomTableViewCell: UITableViewCell {
         }
     }
 }
+//fix
