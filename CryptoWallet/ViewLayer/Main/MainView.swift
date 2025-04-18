@@ -11,7 +11,15 @@ final class MainView: UIView {
     // MARK: - Properties
     private let headerView = MainHeaderView()
     private let tableView = UITableView(frame: .zero, style: .plain)
-    
+    private let bottomView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .backgroundMain
+        view.layer.cornerRadius = 16
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.masksToBounds = true
+        return view
+    }()
+
     private let items: [CurrencyItem] = [
         CurrencyItem(name: "Bitcoin", symbol: "BTC"),
         CurrencyItem(name: "Ethereum", symbol: "ETH"),
@@ -40,9 +48,10 @@ final class MainView: UIView {
     
     // MARK: - Setup
     private func setupUI() {
-        backgroundColor = .backgroundMain
+        backgroundColor = .accentPink
         setupHeaderView()
         setupTableView()
+        setupBottomView()
     }
     
     private func setupHeaderView() {
@@ -54,10 +63,20 @@ final class MainView: UIView {
         }
     }
     
+    private func setupBottomView() {
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: bounds.width, height: 60))
+        container.addSubview(bottomView)
+        bottomView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        tableView.tableHeaderView = container
+        tableView.tableHeaderView?.layoutIfNeeded() // Обновляем layout
+    }
+    
     private func setupTableView() {
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom)
+            make.top.equalTo(headerView.snp.bottom) // Теперь таблица начинается после headerView
             make.leading.trailing.bottom.equalToSuperview()
         }
         

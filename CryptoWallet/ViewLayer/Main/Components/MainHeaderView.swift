@@ -68,15 +68,6 @@ final class MainHeaderView: UIView {
         return menu
     }()
     
-    private let bottomView: UIView = {
-        let bottom = UIView()
-        bottom.backgroundColor = .backgroundMain
-        bottom.layer.cornerRadius = 16
-        bottom.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        bottom.layer.masksToBounds = true
-        return bottom
-    }()
-    
     weak var delegate: MainHeaderViewDelegate?
     private var isPopupVisible = false
     
@@ -99,7 +90,6 @@ final class MainHeaderView: UIView {
         addSubview(subtitleLabel)
         addSubview(moreButton)
         addSubview(learnMoreButton)
-        addSubview(bottomView)
         addSubview(popupMenu)
     }
     
@@ -113,12 +103,6 @@ final class MainHeaderView: UIView {
         subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel).offset(100)
             make.leading.trailing.equalTo(titleLabel)
-        }
-        
-        bottomView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(60)
         }
         
         moreButton.snp.makeConstraints { make in
@@ -173,12 +157,12 @@ final class MainHeaderView: UIView {
 }
 
 extension MainHeaderView: PopupMenuDelegate {
-    func didSelectFirstAction() {
+    func didSelectRefreshAction() {
         delegate?.didSelectRefresh()
         togglePopup()
     }
     
-    func didSelectSecondAction() {
+    func didSelectExitAction() {
         delegate?.didSelectExit()
         togglePopup()
     }
