@@ -34,13 +34,18 @@ final class MainHeaderView: UIView {
         config.attributedTitle = AttributedString("Learn more", attributes: attributes)
         config.baseForegroundColor = .textPrimary
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20)
+        
+        let action = UIAction { action in
+            guard let button = action.sender as? UIButton else { return }
+            button.animatePulse()
+        }
             
-            let button = UIButton(configuration: config, primaryAction: nil)
+        let button = UIButton(configuration: config, primaryAction: action)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.layer.cornerRadius = 18
             button.clipsToBounds = true
             button.backgroundColor = .backgroundMain
-            
+        
             return button
     }()
     
@@ -134,6 +139,10 @@ final class MainHeaderView: UIView {
     // MARK: - Actions
     @objc private func moreButtonTapped() {
         togglePopup()
+    }
+    
+    @objc private func learnMoreButtonTapped() {
+        learnMoreButton.animatePulse()
     }
     
     private func togglePopup() {

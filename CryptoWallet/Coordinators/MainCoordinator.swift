@@ -22,8 +22,7 @@ final class MainCoordinator: ICoordinator {
     }
 
     func start() {
-        let mainVC = MainViewController()
-        navigationController.setViewControllers([mainVC], animated: false)
+        navigationController.setViewControllers([MainBuilder.build(delegate: self)], animated: true)
     }
 
     func showCoinsList() {
@@ -34,4 +33,11 @@ final class MainCoordinator: ICoordinator {
     func showAuthFlow() {
         delegate?.didFinishMain()
     }
+    
+    func didTapLogout() {
+        dependencies.storages.appDefaults.set(value: false, for: .loggedIn)
+        showAuthFlow()
+    }
 }
+
+extension MainCoordinator: MainScreenDelegate {}

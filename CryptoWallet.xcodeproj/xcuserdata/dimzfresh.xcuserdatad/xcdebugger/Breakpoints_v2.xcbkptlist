@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6CF453D4-01BE-41EE-B099-B27F807804BC"
+            uuid = "B6A329C0-3CED-4338-8DF4-E505F52DD97F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CryptoWallet/ViewLayer/Main/MainView.swift"
+            filePath = "CryptoWallet/CryptoAPI/CurrencyService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "calculateHeaderViewHeight(for:)"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "fetchCurrencyData(for:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -5,37 +5,43 @@ protocol MainViewDelegate: AnyObject {
     func didSelectRefresh()
     func didSelectExit()
     func didSelectCurrency(_ currency: CurrencyItem)
+    func didSelectSort()
 }
 
 final class MainView: UIView {
-    // MARK: - Properties
+    let tableView = UITableView(frame: .zero, style: .plain)
+
     private let headerView = MainHeaderView()
-    private let tableView = UITableView(frame: .zero, style: .plain)
     private let bottomView: UIView = {
         let view = UIView()
         view.backgroundColor = .backgroundMain
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 24
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.masksToBounds = true
         return view
     }()
+    
+    private let bottomViewLabel: UILabel = {
+       let bottomViewLabel = UILabel()
+        bottomViewLabel.text = "Trending"
+        bottomViewLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        bottomViewLabel.textColor = .textPrimary
+       return bottomViewLabel
+    }()
+    
+    private let sortButton: UIButton = {
+        let button = UIButton()
+        return button
+    }()
 
-    private let items: [CurrencyItem] = [
-        CurrencyItem(name: "Bitcoin", symbol: "BTC"),
-        CurrencyItem(name: "Ethereum", symbol: "ETH"),
-        CurrencyItem(name: "Tron", symbol: "TRX"),
-        CurrencyItem(name: "Terra", symbol: "LUNA"),
-        CurrencyItem(name: "Cellframe", symbol: "CELL"),
-        CurrencyItem(name: "Dogecoin", symbol: "DOGE"),
-        CurrencyItem(name: "Tether", symbol: "USDT"),
-        CurrencyItem(name: "Stellar", symbol: "XLM"),
-        CurrencyItem(name: "Cardano", symbol: "ADA"),
-        CurrencyItem(name: "Ripple", symbol: "XRP")
-    ]
+    private var items: [CurrencyItem] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     weak var delegate: MainViewDelegate?
     
-    // MARK: - Init
     init(delegate: MainViewDelegate?) {
         self.delegate = delegate
         super.init(frame: .zero)
@@ -46,7 +52,11 @@ final class MainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup
+    func update(with items: [CurrencyItem]) {
+        self.items = items
+    }
+
+    
     private func setupUI() {
         backgroundColor = .accentPink
         setupHeaderView()
@@ -66,17 +76,35 @@ final class MainView: UIView {
     private func setupBottomView() {
         let container = UIView(frame: CGRect(x: 0, y: 0, width: bounds.width, height: 60))
         container.addSubview(bottomView)
+        
+        sortButton.setImage(UIImage(named: "search"), for: .normal)
+        sortButton.tintColor = .textPrimary
+        sortButton.backgroundColor = .backgroundMain
+        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+        sortButton.animatePulse()
+        
+        bottomView.addSubview(sortButton)
+        sortButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(16)
+            make.width.height.equalTo(30)
+            make.centerY.equalToSuperview()
+        }
+        bottomView.addSubview(bottomViewLabel)
+        bottomViewLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
+        }
         bottomView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         tableView.tableHeaderView = container
-        tableView.tableHeaderView?.layoutIfNeeded() // Обновляем layout
+        tableView.tableHeaderView?.layoutIfNeeded()
     }
     
     private func setupTableView() {
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom) // Теперь таблица начинается после headerView
+            make.top.equalTo(headerView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -87,18 +115,26 @@ final class MainView: UIView {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
     }
+    
+    @objc private func sortButtonTapped() {
+        delegate?.didSelectSort()
+        sortButton.animatePulse()
+    }
 }
 
-// MARK: - UITableViewDataSource & Delegate
 extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseIdentifier, for: indexPath) as! CustomTableViewCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: CustomTableViewCell.reuseIdentifier,
+            for: indexPath
+        ) as! CustomTableViewCell
+        
         let item = items[indexPath.row]
-        cell.configure(with: item.name, subtitle: item.symbol, iconName: item.iconName)
+        cell.configure(with: item)
         return cell
     }
     
@@ -108,7 +144,6 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - MainHeaderViewDelegate
 extension MainView: MainHeaderViewDelegate {
     func didSelectRefresh() {
         delegate?.didSelectRefresh()
@@ -118,3 +153,4 @@ extension MainView: MainHeaderViewDelegate {
         delegate?.didSelectExit()
     }
 }
+
