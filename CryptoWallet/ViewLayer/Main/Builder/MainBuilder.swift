@@ -1,6 +1,8 @@
 import UIKit
 
-protocol MainScreenDelegate: AnyObject {}
+protocol MainScreenDelegate: AnyObject {
+    func handleLogout()
+}
 
 enum MainBuilder {
     static func build(delegate: (any MainScreenDelegate)?) -> UIViewController {

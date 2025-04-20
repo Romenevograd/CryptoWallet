@@ -25,6 +25,10 @@ final class MainPresenter: IMainViewInput {
         isFirst = false
         fetch()
     }
+    
+    func handleExit() {
+        delegate?.handleLogout()
+    }
 
     private func fetch() {
         currencyManager.fetchAllCurrencies { [weak self] result in

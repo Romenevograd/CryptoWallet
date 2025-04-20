@@ -34,7 +34,7 @@ final class MainCoordinator: ICoordinator {
         delegate?.didFinishMain()
     }
     
-    func didTapLogout() {
+    func handleLogout() {
         dependencies.storages.appDefaults.set(value: false, for: .loggedIn)
         showAuthFlow()
     }

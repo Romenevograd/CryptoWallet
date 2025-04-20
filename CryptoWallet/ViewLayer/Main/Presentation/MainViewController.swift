@@ -70,7 +70,7 @@ extension MainViewController: MainViewDelegate {
     }
     
     func didSelectExit() {
-        
+        (presenter as? MainPresenter)?.handleExit()
     }
 
     func didSelectCurrency(_ currency: CurrencyItem) {

@@ -34,14 +34,14 @@ final class AuthViewController: UIViewController, IAuthViewOutput {
         switch state {
         case let .result(model):
             loginButton.isEnabled = model.isValid
-            loginButton.backgroundColor = model.isValid ? .Background.buttonPrimary : .Background.buttonPrimary.withAlphaComponent(0.5)
+            loginButton.backgroundColor = model.isValid ? .textPrimary : .textPrimary.withAlphaComponent(0.5)
         case .loading, .error:
             break
         }
     }
 
     private func setupUI() {
-        view.backgroundColor = .Background.grey1
+        view.backgroundColor = .backgroundMain
         setupScrollView()
         setupStackView()
         setupRobotImageView()
@@ -120,10 +120,10 @@ final class AuthViewController: UIViewController, IAuthViewOutput {
 
     private func setupLoginButton() {
         loginButton.isEnabled = false
-        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.setTitleColor(.textHeader, for: .normal)
         loginButton.setTitle("Auth.Button.Login".localized, for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        loginButton.backgroundColor = loginButton.isEnabled ? .Background.buttonPrimary : .Background.buttonPrimary.withAlphaComponent(0.5)
+        loginButton.backgroundColor = loginButton.isEnabled ? .textPrimary : .textPrimary.withAlphaComponent(0.5)
         loginButton.addTarget(self, action: #selector(logInButtonTapped), for: .touchUpInside)
         loginButton.layer.cornerRadius = 28
         stackView.addArrangedSubview(loginButton)
