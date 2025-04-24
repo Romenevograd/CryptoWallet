@@ -6,10 +6,15 @@ protocol MainViewDelegate: AnyObject {
     func didSelectExit()
     func didSelectCurrency(_ currency: CurrencyItem)
     func didSelectSort()
+    func didSelectTab(index: Int)
 }
 
 final class MainView: UIView {
     let tableView = UITableView(frame: .zero, style: .plain)
+    
+    private let sortMenuView = SortMenuView()
+    private var isSortMenuVisible = false
+    private let customTabBar = CustomTabBar()
 
     private let headerView = MainHeaderView()
     private let bottomView: UIView = {
@@ -46,6 +51,7 @@ final class MainView: UIView {
         self.delegate = delegate
         super.init(frame: .zero)
         setupUI()
+        setupTabBar()
     }
     
     required init?(coder: NSCoder) {
@@ -58,10 +64,29 @@ final class MainView: UIView {
 
     
     private func setupUI() {
+        addSubview(headerView)
+        addSubview(tableView)
+        addSubview(bottomView)
+        addSubview(customTabBar)
+        
         backgroundColor = .accentPink
         setupHeaderView()
         setupTableView()
         setupBottomView()
+        setupTabBar()
+        
+    }
+    
+    private func setupTabBar() {
+        addSubview(customTabBar)
+        customTabBar.delegate = self
+        customTabBar.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(60)
+            make.bottom.equalToSuperview()
+        }
+        
+        bringSubviewToFront(customTabBar)
     }
     
     private func setupHeaderView() {
@@ -97,15 +122,23 @@ final class MainView: UIView {
         bottomView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        sortMenuView.delegate = self
+        sortMenuView.isHidden = true
+        addSubview(sortMenuView)
+        
         tableView.tableHeaderView = container
         tableView.tableHeaderView?.layoutIfNeeded()
     }
+    
+    
     
     private func setupTableView() {
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(customTabBar.snp.top)
         }
         
         tableView.dataSource = self
@@ -117,7 +150,19 @@ final class MainView: UIView {
     }
     
     @objc private func sortButtonTapped() {
-        delegate?.didSelectSort()
+        isSortMenuVisible.toggle()
+        sortMenuView.isHidden = !isSortMenuVisible
+        
+        if isSortMenuVisible {
+            bringSubviewToFront(sortMenuView)
+            sortMenuView.snp.remakeConstraints { make in
+                make.top.equalTo(bottomView.snp.bottom).offset(8)
+                make.trailing.equalTo(sortButton.snp.trailing)
+                make.width.equalTo(150)
+            }
+            layoutIfNeeded()
+        }
+        
         sortButton.animatePulse()
     }
 }
@@ -154,3 +199,16 @@ extension MainView: MainHeaderViewDelegate {
     }
 }
 
+extension MainView: SortMenuDelegate {
+    func didSelectSortOption() {
+        isSortMenuVisible = false
+        sortMenuView.isHidden = true
+        delegate?.didSelectSort()
+    }
+}
+
+extension MainView: CustomTabBarDelegate {
+    func didSelectTab(index: Int) {
+        delegate?.didSelectTab(index: index)
+    }
+}

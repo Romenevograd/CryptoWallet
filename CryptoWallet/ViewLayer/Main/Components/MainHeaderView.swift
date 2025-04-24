@@ -90,6 +90,7 @@ final class MainHeaderView: UIView {
     // MARK: - Setup
     private func setupUI() {
         backgroundColor = .accentPink
+        
         addSubview(serverImageView)
         addSubview(titleLabel)
         addSubview(subtitleLabel)

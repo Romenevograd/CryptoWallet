@@ -62,7 +62,7 @@ final class PopupMenuView: UIView {
         addSubview(stackView)
         stackView.addArrangedSubview(refreshButton)
         stackView.addArrangedSubview(exitButton)
-        
+                
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(12)
         }

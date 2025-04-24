@@ -50,7 +50,7 @@ final class InputTextField: UIView {
         inputTextField.attributedText = .init(
             string: "",
             attributes: [
-                .foregroundColor: UIColor.Text.title,
+                .foregroundColor: UIColor.Text.header,
                 .font: UIFont.systemFont(ofSize: 16, weight: .semibold)
             ])
         inputTextField.textAlignment = .left

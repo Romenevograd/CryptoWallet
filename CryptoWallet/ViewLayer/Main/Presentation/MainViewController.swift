@@ -60,6 +60,24 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController: MainViewDelegate {
+    func didSelectTab(index: Int) {
+            switch index {
+            case 0:
+                print("Главная выбрана")
+            case 1:
+                print("Аналитика выбрана")
+            case 2:
+                print("Кошелек выбран")
+            case 3:
+                print("Новости выбраны")
+            case 4:
+                print("Профиль выбран")
+            default:
+                break
+            }
+        }
+
+    
     func didSelectSort() {
         print("Sort button tapped (stub)")
     }
